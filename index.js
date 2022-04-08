@@ -2,34 +2,16 @@ require("dotenv").config();
 const connectDb = require("./Startup/db");
 const express = require("express")
 const cors = require("cors");
+const comments = require("./routes/comments"); 
 //const videoValidate = require("./middleware/video-validation")
-const app = express()
+const app = express();
 
+connectDb();
+
+app.use(cors());
 app.use(express.json())
-app.use(express.urlencoded({extended:true}));
-app.use(cors())
-
-//GET Video with Search
-app
-
-//GET Related Videos
-
-
-//GET Comments
-
-
-//POST Comments
-
-
-//POST Replies
-
-
-//PUT Likes
-
-
-//PUT Dislikes
-
-
+app.use(express.urlencoded({ extended:true }));
+app.use('/api/comments', comments);
 
 const PORT = process.env.PORT || 5000;
 
