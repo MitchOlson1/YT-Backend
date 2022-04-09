@@ -1,6 +1,5 @@
 const { Comment, Reply, validateComment } = require("../models/comment");
 const express = require("express");
-const { header } = require("express/lib/request");
 const router = express.Router();
 
 //Endpoints go here
@@ -57,8 +56,37 @@ router.put("/:commentId/replies", async (req, res) => {
 });
 
 //PUT Likes
-
+router.put("/:commentId/likes", async (req, res) => {
+    try {       
+        let comment = await Comment.findById(req.params.commentId);
+        
+        if (!comment) return res.status(400).send(`Comment does not exist!`)
+        
+        comment.likes++;
+        
+        await comment.save();
+        
+        return res.status(200).send(comment);        
+    } catch (error) {
+        return res.status(500).send(`Internal Server Error: ${error}`);
+    }
+});
 
 //PUT Dislikes
+router.put("/:commentId/dislikes", async (req, res) => {
+    try {       
+        let comment = await Comment.findById(req.params.commentId);
+        
+        if (!comment) return res.status(400).send(`Comment does not exist!`)
+        
+        comment.dislikes++;
+        
+        await comment.save();
+        
+        return res.status(200).send(comment);        
+    } catch (error) {
+        return res.status(500).send(`Internal Server Error: ${error}`);
+    }
+});
 
 module.exports = router;
